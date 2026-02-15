@@ -1,6 +1,8 @@
 package com.autoflex.productioncontrol.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.autoflex.productioncontrol.entity.RawMaterial;
 import com.autoflex.productioncontrol.service.RawMaterialService;
@@ -15,6 +17,7 @@ public class RawMaterialController {
     private final RawMaterialService rawMaterialService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public RawMaterial create(@RequestBody RawMaterial rawMaterial) {
         return rawMaterialService.create(rawMaterial);
     }
