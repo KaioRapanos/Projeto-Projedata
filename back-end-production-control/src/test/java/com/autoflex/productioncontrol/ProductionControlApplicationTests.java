@@ -1,4 +1,4 @@
-package com.autoflex.production_control;
+package com.autoflex.productioncontrol;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
