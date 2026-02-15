@@ -1,6 +1,8 @@
 package com.autoflex.productioncontrol.controller;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.service.ProductService;
@@ -15,6 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product create(@RequestBody Product product) {
         return productService.create(product);
     }
