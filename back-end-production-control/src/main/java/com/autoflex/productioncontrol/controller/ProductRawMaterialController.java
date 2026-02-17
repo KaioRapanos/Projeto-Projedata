@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product-materials")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class ProductRawMaterialController {
 

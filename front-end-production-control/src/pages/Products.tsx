@@ -1,5 +1,10 @@
-function Products() {
-  return <h1>Products</h1>
-}
+import ProductList from '../components/ProductList'
 
-export default Products
+export default function ProductsPage() {
+  return (
+    <div>
+      <h1>Products Page</h1>
+      <ProductList />
+    </div>
+  )
+}

@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/production")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*") // Permite chamadas de qualquer front-end
+@CrossOrigin(origins = "http://localhost:5173")
 @Tag(name = "Production", description = "Endpoints for production suggestions")
 public class ProductionController {
 
