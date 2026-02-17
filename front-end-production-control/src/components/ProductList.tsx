@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
 import { CrudButton } from './CrudButton'
+import ProductForm from './ProductForm'
 
 interface Product {
   id: number
@@ -12,6 +13,8 @@ interface Product {
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [showForm, setShowForm] = useState(false)
+  const [editProduct, setEditProduct] = useState<Product | null>(null)
 
   const fetchProducts = async () => {
     setLoading(true)
@@ -32,7 +35,10 @@ export default function ProductList() {
   return (
     <div>
       <h3>Products</h3>
-      <button onClick={() => console.log('Open new product form')}>New Product</button>
+      {/* Botão para adicionar novo produto */}
+      <button onClick={() => { setEditProduct(null); setShowForm(true) }}>
+         New Product
+      </button>
       <table>
         <thead>
           <tr>
@@ -49,13 +55,31 @@ export default function ProductList() {
               <td>${p.price}</td>
               <td>{p.quantity}</td>
               <td>
-                <CrudButton id={p.id} entity="products" type="edit" onUpdate={fetchProducts} />
-                <CrudButton id={p.id} entity="products" type="delete" onUpdate={fetchProducts} />
+                {/* Botão Edit */}
+                <button onClick={() => { setEditProduct(p); setShowForm(true) }}>
+                  Edit
+                </button>
+                {/* Botão Delete */}
+                <CrudButton
+                  id={p.id}
+                  entity="products"
+                  type="delete"
+                  onUpdate={fetchProducts}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Formulário condicional para New/Edit */}
+      {showForm && (
+        <ProductForm
+          product={editProduct || undefined}
+          onSuccess={fetchProducts}
+          onClose={() => setShowForm(false)}
+        />
+      )}
     </div>
   )
 }
