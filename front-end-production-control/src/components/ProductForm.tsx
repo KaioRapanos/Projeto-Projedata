@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { api } from '../services/api'
+import '../styles/ProductForm.css'
 
 interface Product {
   id?: number

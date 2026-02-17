@@ -39,6 +39,10 @@ public class ProductRawMaterialService {
         repository.deleteById(id);
     }
 
+    public void deleteAll(List<ProductRawMaterial> list) {
+        repository.deleteAll(list);
+    }
+
     public List<ProductRawMaterial> findByProductId(Long productId) {
         return repository.findByProductId(productId);
     }

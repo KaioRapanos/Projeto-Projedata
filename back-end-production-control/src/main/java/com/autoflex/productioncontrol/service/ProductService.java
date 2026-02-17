@@ -7,6 +7,7 @@ import com.autoflex.productioncontrol.repository.ProductRawMaterialRepository;
 import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
 import com.autoflex.productioncontrol.dto.ProductProductionDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,7 +18,8 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductRawMaterialRepository productMaterialRepository;
+    private final ProductRawMaterialRepository productRawMaterialRepository;
+    private final ProductRawMaterialService productRawMaterialService;
 
     // --------------------- CRUD ---------------------
 
@@ -43,8 +45,13 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    public void delete(Long id) {
-        productRepository.deleteById(id);
+    @Transactional
+    public void delete(Long productId) {
+        // Deleta todos os links primeiro
+        productRawMaterialRepository.deleteByProductId(productId);
+
+        // Agora deleta o produto
+        productRepository.deleteById(productId);
     }
 
     // --------------------- Produção sugerida ---------------------
@@ -53,7 +60,7 @@ public class ProductService {
         List<ProductProductionDTO> result = new ArrayList<>();
 
         for (Product product : products) {
-            List<ProductRawMaterial> materials = productMaterialRepository.findByProductId(product.getId());
+            List<ProductRawMaterial> materials = productRawMaterialRepository.findByProductId(product.getId());
 
             if (materials.isEmpty()) continue;
 

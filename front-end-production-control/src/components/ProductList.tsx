@@ -34,43 +34,46 @@ export default function ProductList() {
 
   return (
     <div>
-      <h3>Products</h3>
-      {/* Botão para adicionar novo produto */}
-      <button onClick={() => { setEditProduct(null); setShowForm(true) }}>
-         New Product
-      </button>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p.id}>
-              <td>{p.name}</td>
-              <td>${p.price}</td>
-              <td>{p.quantity}</td>
-              <td>
-                {/* Botão Edit */}
-                <button onClick={() => { setEditProduct(p); setShowForm(true) }}>
-                  Edit
-                </button>
-                {/* Botão Delete */}
-                <CrudButton
-                  id={p.id}
-                  entity="products"
-                  type="delete"
-                  onUpdate={fetchProducts}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Mostrar lista apenas se form não estiver ativo */}
+      {!showForm && (
+        <>
+          <h3>Products</h3>
+          <button onClick={() => { setEditProduct(null); setShowForm(true) }}>
+            New Product
+          </button>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((p) => (
+                <tr key={p.id}>
+                  <td>{p.name}</td>
+                  <td>${p.price}</td>
+                  <td>{p.quantity}</td>
+                  <td>
+                    <button onClick={() => { setEditProduct(p); setShowForm(true) }}>
+                      Edit
+                    </button>
+                    <CrudButton
+                      id={p.id}
+                      entity="products"
+                      type="delete"
+                      onUpdate={fetchProducts}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
 
       {/* Formulário condicional para New/Edit */}
       {showForm && (
