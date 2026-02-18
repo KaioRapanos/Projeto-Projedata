@@ -2,18 +2,17 @@ package com.autoflex.productioncontrol.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.autoflex.productioncontrol.repository.ProductRepository;
 import com.autoflex.productioncontrol.repository.ProductRawMaterialRepository;
 import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
 import com.autoflex.productioncontrol.dto.ProductProductionDTO;
-import org.springframework.transaction.annotation.Transactional;
 import com.autoflex.productioncontrol.dto.ProductResponseDTO;
 import com.autoflex.productioncontrol.dto.RawMaterialDTO;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,21 +37,6 @@ public class ProductService {
         return productRepository.save(existing);
     }
 
-    public List<ProductResponseDTO> getAllProductsWithRawMaterials() {
-    List<Product> products = productRepository.findAll(); // ou JOIN FETCH se quiser otimizar
-    return products.stream()
-            .map(p -> new ProductResponseDTO(
-                    p.getId(),
-                    p.getName(),
-                    p.getPrice(),
-                    p.getQuantity(),
-                    p.getProductRawMaterials().stream()
-                        .map(rm -> new RawMaterialDTO(rm.getRawMaterial().getId(), rm.getRawMaterial().getName()))
-                        .toList()
-            ))
-            .toList();
-    }
-
     public Product findById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -62,12 +46,54 @@ public class ProductService {
     public void delete(Long productId) {
         // Deleta todos os links primeiro
         productRawMaterialRepository.deleteByProductId(productId);
-
         // Agora deleta o produto
         productRepository.deleteById(productId);
     }
 
+    // --------------------- Produtos com matérias-primas ---------------------
+
+    public List<ProductResponseDTO> getAllProductsWithRawMaterials() {
+        List<Product> products = productRepository.findAll(); // ou JOIN FETCH para otimizar
+
+        return products.stream()
+                .map(product -> {
+                    // Agrupa matérias-primas por ID e soma quantidade
+                    Map<Long, RawMaterialDTO> groupedMaterials = new HashMap<>();
+
+                    for (ProductRawMaterial prm : product.getProductRawMaterials()) {
+                        Long rawId = prm.getRawMaterial().getId();
+                        RawMaterialDTO existing = groupedMaterials.get(rawId);
+
+                        if (existing != null) {
+                            // soma a quantidade
+                            int newQty = existing.getQuantity() + prm.getQuantity();
+                            groupedMaterials.put(rawId, new RawMaterialDTO(
+                                    rawId,
+                                    prm.getRawMaterial().getName(),
+                                    newQty
+                            ));
+                        } else {
+                            groupedMaterials.put(rawId, new RawMaterialDTO(
+                                    rawId,
+                                    prm.getRawMaterial().getName(),
+                                    prm.getQuantity()
+                            ));
+                        }
+                    }
+
+                    return new ProductResponseDTO(
+                            product.getId(),
+                            product.getName(),
+                            product.getPrice(),
+                            product.getQuantity(),
+                            new ArrayList<>(groupedMaterials.values())
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
     // --------------------- Produção sugerida ---------------------
+
     public List<ProductProductionDTO> getProductionSuggestions() {
         List<Product> products = productRepository.findAll();
         List<ProductProductionDTO> result = new ArrayList<>();
@@ -80,7 +106,7 @@ public class ProductService {
             int maxQuantity = Integer.MAX_VALUE;
 
             for (ProductRawMaterial prm : materials) {
-                int availableStock = prm.getRawMaterial().getQuantity(); // use getQuantity()
+                int availableStock = prm.getRawMaterial().getQuantity(); // estoque disponível
                 int required = prm.getQuantity(); // quantidade necessária por produto
                 int possible = availableStock / required; // quantidade máxima que pode ser produzida
 

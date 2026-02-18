@@ -20,7 +20,17 @@ export default function RawMaterialList() {
     setLoading(true)
     try {
       const res = await api.get('/raw-materials')
-      setRawMaterials(res.data)
+
+      // **Mapeando quantity para quantityInStock**
+      const mappedData = res.data
+      .map((rm: { id: number; name: string; quantity: number }) => ({
+        id: rm.id,
+        name: rm.name,
+        quantityInStock: rm.quantity
+      }))
+      .sort((a: RawMaterial, b: RawMaterial) => a.name.localeCompare(b.name)) // ordena alfabeticamente
+
+    setRawMaterials(mappedData)
     } finally {
       setLoading(false)
     }

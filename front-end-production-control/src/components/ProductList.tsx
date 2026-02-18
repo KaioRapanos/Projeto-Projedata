@@ -3,11 +3,18 @@ import { api } from '../services/api'
 import { CrudButton } from './CrudButton'
 import ProductForm from './ProductForm'
 
+interface RawMaterial {
+  id: number
+  name: string
+  quantity: number
+}
+
 interface Product {
   id: number
   name: string
   price: number
   quantity: number
+  rawMaterials: RawMaterial[]
 }
 
 export default function ProductList() {
@@ -21,6 +28,10 @@ export default function ProductList() {
     try {
       const res = await api.get('/products')
       setProducts(res.data)
+      const sorted = res.data.sort((a: Product, b: Product) =>
+        a.name.localeCompare(b.name)
+      )
+      setProducts(sorted)
     } finally {
       setLoading(false)
     }
@@ -57,6 +68,13 @@ export default function ProductList() {
                   <td>{p.name}</td>
                   <td>${p.price}</td>
                   <td>{p.quantity}</td>
+                  <td>
+                    {p.rawMaterials.map((rm, index) => (
+                      <div key={`${rm.id}-${index}`}> {/* garante unicidade */}
+                        {rm.name} ({rm.quantity})
+                      </div>
+                    ))}
+                  </td>
                   <td>
                     <button onClick={() => { setEditProduct(p); setShowForm(true) }}>
                       Edit

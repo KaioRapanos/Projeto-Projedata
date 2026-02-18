@@ -11,15 +11,15 @@ interface Product {
 }
 
 interface ProductFormProps {
-  product?: Product         // se passado, é edit; se não, é new
-  onSuccess: () => void     // callback após criar/editar
-  onClose: () => void       // fechar modal
+  product?: Product
+  onSuccess: () => void
+  onClose: () => void
 }
 
 export default function ProductForm({ product, onSuccess, onClose }: ProductFormProps) {
   const [name, setName] = useState(product?.name || '')
-  const [price, setPrice] = useState(product?.price || 0)
-  const [quantity, setQuantity] = useState(product?.quantity || 0)
+  const [price, setPrice] = useState(product?.price.toString() || '')
+  const [quantity, setQuantity] = useState(product?.quantity.toString() || '')
   const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,13 +27,19 @@ export default function ProductForm({ product, onSuccess, onClose }: ProductForm
     setLoading(true)
 
     try {
-      if (product?.id) {
-        // Edit
-        await api.put(`/products/${product.id}`, { name, price, quantity })
-      } else {
-        // New
-        await api.post('/products', { name, price, quantity })
+      // Convertemos para número aqui, só no submit
+      const payload = {
+        name,
+        price: Number(price),
+        quantity: Number(quantity)
       }
+
+      if (product?.id) {
+        await api.put(`/products/${product.id}`, payload)
+      } else {
+        await api.post('/products', payload)
+      }
+
       onSuccess()
       onClose()
     } finally {
@@ -49,20 +55,29 @@ export default function ProductForm({ product, onSuccess, onClose }: ProductForm
       </div>
       <div>
         <label>Price:</label>
-        <input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} required />
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          required
+        />
       </div>
       <div>
         <label>Quantity:</label>
-        <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} required />
+        <input
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          required
+        />
       </div>
+
       <button type="submit" disabled={loading}>
         {loading ? 'Saving...' : product?.id ? 'Update' : 'Create'}
       </button>
       <button type="button" onClick={onClose}>Cancel</button>
 
-      {product?.id && (
-        <ProductComposition productId={product.id} />
-      )}
+      {product?.id && <ProductComposition productId={product.id} />}
     </form>
   )
 }

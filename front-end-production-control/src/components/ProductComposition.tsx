@@ -81,8 +81,8 @@ export default function ProductComposition({ productId }: Props) {
       <button onClick={handleAdd}>Add</button>
 
       <ul>
-        {relations.map(rel => (
-          <li key={rel.id}>
+        {relations.map((rel, index) => (
+          <li key={`${rel.id}-${rel.rawMaterial.id}-${index}`}>
             {rel.rawMaterial.name} - {rel.quantity}
           </li>
         ))}

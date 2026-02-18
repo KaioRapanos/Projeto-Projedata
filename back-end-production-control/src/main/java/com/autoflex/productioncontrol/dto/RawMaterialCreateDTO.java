@@ -1,16 +1,11 @@
 package com.autoflex.productioncontrol.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class RawMaterialDTO {
-    private Long id;
+public class RawMaterialCreateDTO {
     private String name;
     private Integer quantity;
 }

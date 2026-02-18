@@ -1,6 +1,7 @@
 package com.autoflex.productioncontrol.service;
 
-import com.autoflex.productioncontrol.entity.RawMaterial;
+import com.autoflex.productioncontrol.dto.RawMaterialCreateDTO;
+import com.autoflex.productioncontrol.dto.RawMaterialDTO;
 import com.autoflex.productioncontrol.repository.RawMaterialRepository;
 
 import org.junit.jupiter.api.Test;
@@ -20,38 +21,43 @@ public class RawMaterialServiceTest {
 
     @Test
     void testCreateAndGetRawMaterial() {
-        RawMaterial raw = new RawMaterial();
-        raw.setName("Test Material");
-        raw.setQuantity(100);
+        RawMaterialCreateDTO createDTO = new RawMaterialCreateDTO();
+        createDTO.setName("Test Material");
+        createDTO.setQuantity(100);
 
-        RawMaterial saved = rawMaterialService.create(raw);
+        RawMaterialDTO saved = rawMaterialService.create(createDTO);
         assertNotNull(saved.getId());
 
-        RawMaterial fetched = rawMaterialService.findById(saved.getId());
+        RawMaterialDTO fetched = rawMaterialService.findById(saved.getId());
         assertEquals("Test Material", fetched.getName());
         assertEquals(100, fetched.getQuantity());
     }
 
     @Test
     void testUpdateRawMaterial() {
-        RawMaterial raw = new RawMaterial();
-        raw.setName("Update Material");
-        raw.setQuantity(50);
+        RawMaterialCreateDTO createDTO = new RawMaterialCreateDTO();
+        createDTO.setName("Update Material");
+        createDTO.setQuantity(50);
 
-        RawMaterial saved = rawMaterialService.create(raw);
-        saved.setQuantity(75);
-        RawMaterial updated = rawMaterialService.update(saved.getId(), saved);
+        RawMaterialDTO saved = rawMaterialService.create(createDTO);
+
+        // Preparar DTO de update
+        RawMaterialCreateDTO updateDTO = new RawMaterialCreateDTO();
+        updateDTO.setName("Update Material"); // mantém mesmo nome
+        updateDTO.setQuantity(75); // altera quantidade
+
+        RawMaterialDTO updated = rawMaterialService.update(saved.getId(), updateDTO);
 
         assertEquals(75, updated.getQuantity());
     }
 
     @Test
     void testDeleteRawMaterial() {
-        RawMaterial raw = new RawMaterial();
-        raw.setName("Delete Material");
-        raw.setQuantity(20);
+        RawMaterialCreateDTO createDTO = new RawMaterialCreateDTO();
+        createDTO.setName("Delete Material");
+        createDTO.setQuantity(20);
 
-        RawMaterial saved = rawMaterialService.create(raw);
+        RawMaterialDTO saved = rawMaterialService.create(createDTO);
         rawMaterialService.delete(saved.getId());
 
         assertFalse(rawMaterialRepository.findById(saved.getId()).isPresent());

@@ -99,6 +99,6 @@ class RawMaterialControllerTest {
         rawMaterial = rawMaterialRepository.save(rawMaterial);
 
         mockMvc.perform(delete("/raw-materials/{id}", rawMaterial.getId()))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }
