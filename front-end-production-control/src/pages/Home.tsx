@@ -1,5 +1,12 @@
+import ProductionSuggestions from '../components/ProductionSuggestions'
+
 function Home() {
-  return <h1>Home</h1>
+  return (
+    <div>
+      <h1>Home</h1>
+      <ProductionSuggestions />
+    </div>
+  )
 }
 
 export default Home
