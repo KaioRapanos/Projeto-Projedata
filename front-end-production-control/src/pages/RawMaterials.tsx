@@ -1,5 +1,5 @@
-function RawMaterials() {
-  return <h1>Raw Materials</h1>
-}
+import RawMaterialList from '../components/RawMaterialList'
 
-export default RawMaterials
+export default function RawMaterials() {
+  return <RawMaterialList />
+}
