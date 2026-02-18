@@ -19,4 +19,5 @@ public interface ProductRawMaterialRepository extends JpaRepository<ProductRawMa
     @Transactional
     @Query("DELETE FROM ProductRawMaterial prm WHERE prm.product.id = :productId")
     void deleteByProductId(@Param("productId") Long productId);
+    
 }
