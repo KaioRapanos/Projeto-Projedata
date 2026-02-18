@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '../services/api'
 import '../styles/ProductForm.css'
+import ProductComposition from './ProductComposition.tsx'
 
 interface Product {
   id?: number
@@ -58,6 +59,10 @@ export default function ProductForm({ product, onSuccess, onClose }: ProductForm
         {loading ? 'Saving...' : product?.id ? 'Update' : 'Create'}
       </button>
       <button type="button" onClick={onClose}>Cancel</button>
+
+      {product?.id && (
+        <ProductComposition productId={product.id} />
+      )}
     </form>
   )
 }

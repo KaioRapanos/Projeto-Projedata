@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
 import com.autoflex.productioncontrol.service.ProductRawMaterialService;
+import com.autoflex.productioncontrol.dto.ProductRawMaterialDTO;
 
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class ProductRawMaterialController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductRawMaterial create(@RequestBody ProductRawMaterial prm) {
-        return service.create(prm);
+    public ProductRawMaterial create(@RequestBody ProductRawMaterialDTO dto) {
+        return service.create(dto);
     }
 
     @PutMapping("/{id}")
@@ -37,18 +38,20 @@ public class ProductRawMaterialController {
         return service.findById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
-
-    @GetMapping("/by-product/{productId}")
+    // ✅ Endpoint que o front precisa
+    @GetMapping("/product/{productId}")
     public List<ProductRawMaterial> findByProductId(@PathVariable Long productId) {
         return service.findByProductId(productId);
     }
 
-    @GetMapping("/by-raw-material/{rawMaterialId}")
+    @GetMapping("/raw-material/{rawMaterialId}")
     public List<ProductRawMaterial> findByRawMaterialId(@PathVariable Long rawMaterialId) {
         return service.findByRawMaterialId(rawMaterialId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 }

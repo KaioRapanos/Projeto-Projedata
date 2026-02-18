@@ -1,5 +1,6 @@
 package com.autoflex.productioncontrol.controller;
 
+import com.autoflex.productioncontrol.dto.ProductRawMaterialDTO;
 import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.entity.RawMaterial;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
@@ -50,16 +51,17 @@ class ProductRawMaterialControllerTest {
         raw.setQuantity(20);
         raw = rawMaterialRepository.save(raw);
 
-        ProductRawMaterial prm = new ProductRawMaterial();
-        prm.setProduct(product);
-        prm.setRawMaterial(raw);
-        prm.setQuantity(5);
+        // 🔹 agora usamos DTO
+        ProductRawMaterialDTO dto = new ProductRawMaterialDTO();
+        dto.setProductId(product.getId());
+        dto.setRawMaterialId(raw.getId());
+        dto.setQuantity(5);
 
         mockMvc.perform(post("/product-materials")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(prm)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.quantity").value(5));
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.quantity").value(5));
     }
 
     @Test

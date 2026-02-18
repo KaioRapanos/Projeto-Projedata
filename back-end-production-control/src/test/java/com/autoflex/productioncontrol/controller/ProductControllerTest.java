@@ -102,6 +102,7 @@ class ProductControllerTest {
         product = productRepository.save(product);
 
         mockMvc.perform(delete("/products/{id}", product.getId()))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
+
     }
 }

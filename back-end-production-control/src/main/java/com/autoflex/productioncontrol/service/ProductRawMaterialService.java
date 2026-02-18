@@ -2,8 +2,14 @@ package com.autoflex.productioncontrol.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
+import com.autoflex.productioncontrol.entity.RawMaterial;
 import com.autoflex.productioncontrol.repository.ProductRawMaterialRepository;
+import com.autoflex.productioncontrol.repository.ProductRepository;
+import com.autoflex.productioncontrol.repository.RawMaterialRepository;
+import com.autoflex.productioncontrol.dto.ProductRawMaterialDTO;
 
 import java.util.List;
 
@@ -12,17 +18,34 @@ import java.util.List;
 public class ProductRawMaterialService {
 
     private final ProductRawMaterialRepository repository;
+    private final ProductRepository productRepository;
+    private final RawMaterialRepository rawMaterialRepository;
 
-    public ProductRawMaterial create(ProductRawMaterial prm) {
+    // ✅ CREATE usando DTO
+    public ProductRawMaterial create(ProductRawMaterialDTO dto) {
+
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        RawMaterial rawMaterial = rawMaterialRepository.findById(dto.getRawMaterialId())
+                .orElseThrow(() -> new RuntimeException("Raw material not found"));
+
+        ProductRawMaterial prm = new ProductRawMaterial();
+        prm.setProduct(product);
+        prm.setRawMaterial(rawMaterial);
+        prm.setQuantity(dto.getQuantity());
+
         return repository.save(prm);
     }
 
     public ProductRawMaterial update(Long id, ProductRawMaterial prm) {
         ProductRawMaterial existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ProductRawMaterial not found"));
+
         existing.setProduct(prm.getProduct());
         existing.setRawMaterial(prm.getRawMaterial());
         existing.setQuantity(prm.getQuantity());
+
         return repository.save(existing);
     }
 
@@ -37,10 +60,6 @@ public class ProductRawMaterialService {
 
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-
-    public void deleteAll(List<ProductRawMaterial> list) {
-        repository.deleteAll(list);
     }
 
     public List<ProductRawMaterial> findByProductId(Long productId) {
