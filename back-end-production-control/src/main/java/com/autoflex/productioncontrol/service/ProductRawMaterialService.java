@@ -38,13 +38,20 @@ public class ProductRawMaterialService {
         return repository.save(prm);
     }
 
-    public ProductRawMaterial update(Long id, ProductRawMaterial prm) {
+    // ✅ UPDATE usando DTO
+    public ProductRawMaterial update(Long id, ProductRawMaterialDTO dto) {
         ProductRawMaterial existing = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ProductRawMaterial not found"));
 
-        existing.setProduct(prm.getProduct());
-        existing.setRawMaterial(prm.getRawMaterial());
-        existing.setQuantity(prm.getQuantity());
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        RawMaterial rawMaterial = rawMaterialRepository.findById(dto.getRawMaterialId())
+                .orElseThrow(() -> new RuntimeException("Raw material not found"));
+
+        existing.setProduct(product);
+        existing.setRawMaterial(rawMaterial);
+        existing.setQuantity(dto.getQuantity());
 
         return repository.save(existing);
     }

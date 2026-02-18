@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import com.autoflex.productioncontrol.dto.ProductResponseDTO;
+
 
 import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.service.ProductService;
@@ -33,9 +35,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findAll() {
-        return productService.findAll();
+    public List<ProductResponseDTO> findAll() {
+        return productService.getAllProductsWithRawMaterials();
     }
+
 
     @GetMapping("/{id}")
     public Product findById(@PathVariable Long id) {

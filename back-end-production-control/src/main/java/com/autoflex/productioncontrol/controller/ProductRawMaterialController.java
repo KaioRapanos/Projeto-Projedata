@@ -1,8 +1,9 @@
 package com.autoflex.productioncontrol.controller;
 
-import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
 import com.autoflex.productioncontrol.service.ProductRawMaterialService;
 import com.autoflex.productioncontrol.dto.ProductRawMaterialDTO;
@@ -17,38 +18,83 @@ public class ProductRawMaterialController {
 
     private final ProductRawMaterialService service;
 
+    // Criar nova associação
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductRawMaterial create(@RequestBody ProductRawMaterialDTO dto) {
-        return service.create(dto);
+    public ProductRawMaterialDTO create(@RequestBody ProductRawMaterialDTO dto) {
+        ProductRawMaterial prm = service.create(dto);
+        return new ProductRawMaterialDTO(
+                prm.getProduct().getId(),
+                prm.getRawMaterial().getId(),
+                prm.getQuantity(),
+                new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+        );
     }
 
+    // Atualizar associação existente
     @PutMapping("/{id}")
-    public ProductRawMaterial update(@PathVariable Long id, @RequestBody ProductRawMaterial prm) {
-        return service.update(id, prm);
+    public ProductRawMaterialDTO update(@PathVariable Long id, @RequestBody ProductRawMaterialDTO dto) {
+        ProductRawMaterial prm = service.update(id, dto);
+        return new ProductRawMaterialDTO(
+                prm.getProduct().getId(),
+                prm.getRawMaterial().getId(),
+                prm.getQuantity(),
+                new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+        );
     }
 
+    // Buscar todas as associações
     @GetMapping
-    public List<ProductRawMaterial> findAll() {
-        return service.findAll();
+    public List<ProductRawMaterialDTO> findAll() {
+        return service.findAll().stream()
+                .map(prm -> new ProductRawMaterialDTO(
+                        prm.getProduct().getId(),
+                        prm.getRawMaterial().getId(),
+                        prm.getQuantity(),
+                        new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+                ))
+                .toList();
     }
 
+    // Buscar associação por ID
     @GetMapping("/{id}")
-    public ProductRawMaterial findById(@PathVariable Long id) {
-        return service.findById(id);
+    public ProductRawMaterialDTO findById(@PathVariable Long id) {
+        ProductRawMaterial prm = service.findById(id);
+        return new ProductRawMaterialDTO(
+                prm.getProduct().getId(),
+                prm.getRawMaterial().getId(),
+                prm.getQuantity(),
+                new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+        );
     }
 
-    // ✅ Endpoint que o front precisa
+    // Buscar todas as matérias-primas de um produto
     @GetMapping("/product/{productId}")
-    public List<ProductRawMaterial> findByProductId(@PathVariable Long productId) {
-        return service.findByProductId(productId);
+    public List<ProductRawMaterialDTO> findByProductId(@PathVariable Long productId) {
+        return service.findByProductId(productId).stream()
+                .map(prm -> new ProductRawMaterialDTO(
+                        prm.getProduct().getId(),
+                        prm.getRawMaterial().getId(),
+                        prm.getQuantity(),
+                        new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+                ))
+                .toList();
     }
 
+    // Buscar todos os produtos de uma matéria-prima
     @GetMapping("/raw-material/{rawMaterialId}")
-    public List<ProductRawMaterial> findByRawMaterialId(@PathVariable Long rawMaterialId) {
-        return service.findByRawMaterialId(rawMaterialId);
+    public List<ProductRawMaterialDTO> findByRawMaterialId(@PathVariable Long rawMaterialId) {
+        return service.findByRawMaterialId(rawMaterialId).stream()
+                .map(prm -> new ProductRawMaterialDTO(
+                        prm.getProduct().getId(),
+                        prm.getRawMaterial().getId(),
+                        prm.getQuantity(),
+                        new ProductRawMaterialDTO.RawMaterialNameDTO(prm.getRawMaterial().getName())
+                ))
+                .toList();
     }
 
+    // Deletar associação
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {

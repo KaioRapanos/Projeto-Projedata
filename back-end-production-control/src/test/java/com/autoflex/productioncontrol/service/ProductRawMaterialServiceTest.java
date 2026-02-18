@@ -65,20 +65,20 @@ public class ProductRawMaterialServiceTest {
     @Test
     void testUpdate() {
 
-        // 🔹 Cria Product
+        // Cria Product
         Product product = new Product();
         product.setName("Product B");
         product.setPrice(150.0);
         product.setQuantity(15);
         product = productRepository.save(product);
 
-        // 🔹 Cria RawMaterial
+        // Cria RawMaterial
         RawMaterial raw = new RawMaterial();
         raw.setName("Material Y");
         raw.setQuantity(30);
         raw = rawMaterialRepository.save(raw);
 
-        // 🔹 Cria DTO
+        // Cria DTO inicial
         ProductRawMaterialDTO dto = new ProductRawMaterialDTO();
         dto.setProductId(product.getId());
         dto.setRawMaterialId(raw.getId());
@@ -86,10 +86,14 @@ public class ProductRawMaterialServiceTest {
 
         ProductRawMaterial saved = service.create(dto);
 
-        // 🔹 Atualiza quantidade
-        saved.setQuantity(20);
+        // Cria DTO para atualizar
+        ProductRawMaterialDTO updateDto = new ProductRawMaterialDTO();
+        updateDto.setProductId(product.getId());
+        updateDto.setRawMaterialId(raw.getId());
+        updateDto.setQuantity(20);
 
-        ProductRawMaterial updated = service.update(saved.getId(), saved);
+        // Atualiza usando DTO
+        ProductRawMaterial updated = service.update(saved.getId(), updateDto);
 
         assertEquals(20, updated.getQuantity());
     }

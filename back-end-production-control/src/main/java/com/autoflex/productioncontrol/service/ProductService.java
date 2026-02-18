@@ -8,6 +8,8 @@ import com.autoflex.productioncontrol.entity.Product;
 import com.autoflex.productioncontrol.entity.ProductRawMaterial;
 import com.autoflex.productioncontrol.dto.ProductProductionDTO;
 import org.springframework.transaction.annotation.Transactional;
+import com.autoflex.productioncontrol.dto.ProductResponseDTO;
+import com.autoflex.productioncontrol.dto.RawMaterialDTO;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,8 +38,19 @@ public class ProductService {
         return productRepository.save(existing);
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProductsWithRawMaterials() {
+    List<Product> products = productRepository.findAll(); // ou JOIN FETCH se quiser otimizar
+    return products.stream()
+            .map(p -> new ProductResponseDTO(
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getQuantity(),
+                    p.getProductRawMaterials().stream()
+                        .map(rm -> new RawMaterialDTO(rm.getRawMaterial().getId(), rm.getRawMaterial().getName()))
+                        .toList()
+            ))
+            .toList();
     }
 
     public Product findById(Long id) {
@@ -56,7 +69,7 @@ public class ProductService {
 
     // --------------------- Produção sugerida ---------------------
     public List<ProductProductionDTO> getProductionSuggestions() {
-        List<Product> products = findAll();
+        List<Product> products = productRepository.findAll();
         List<ProductProductionDTO> result = new ArrayList<>();
 
         for (Product product : products) {
