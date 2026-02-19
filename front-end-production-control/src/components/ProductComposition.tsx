@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
+import styles from './styles/ProductComposition.module.css'
 
 interface RawMaterial {
   id: number
@@ -17,7 +18,6 @@ interface Props {
 }
 
 export default function ProductComposition({ productId }: Props) {
-
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([])
   const [relations, setRelations] = useState<ProductRawMaterial[]>([])
   const [selectedRawMaterial, setSelectedRawMaterial] = useState<number>()
@@ -41,7 +41,7 @@ export default function ProductComposition({ productId }: Props) {
     await api.post('/product-materials', {
       productId,
       rawMaterialId: selectedRawMaterial,
-      quantity
+      quantity,
     })
 
     setQuantity(0)
@@ -56,33 +56,42 @@ export default function ProductComposition({ productId }: Props) {
   }
 
   return (
-    <div style={{ marginTop: 20 }}>
-      <h4>Composition</h4>
+    <div className={styles.container}>
+      <h4 className={styles.title}>Composition</h4>
 
-      <select
-        value={selectedRawMaterial || ''}
-        onChange={(e) => setSelectedRawMaterial(Number(e.target.value))}
-      >
-        <option value="">Select raw material</option>
-        {rawMaterials.map(rm => (
-          <option key={rm.id} value={rm.id}>
-            {rm.name}
-          </option>
-        ))}
-      </select>
+      <div className={styles.controls}>
+        <select
+          className={styles.select}
+          value={selectedRawMaterial || ''}
+          onChange={(e) => setSelectedRawMaterial(Number(e.target.value))}
+        >
+          <option value="">Select raw material</option>
+          {rawMaterials.map((rm) => (
+            <option key={rm.id} value={rm.id}>
+              {rm.name}
+            </option>
+          ))}
+        </select>
 
-      <input
-        type="number"
-        placeholder="Quantity"
-        value={quantity}
-        onChange={(e) => setQuantity(Number(e.target.value))}
-      />
+        <input
+          className={styles.input}
+          type="number"
+          placeholder="Quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        />
 
-      <button onClick={handleAdd}>Add</button>
+        <button className={styles.addButton} onClick={handleAdd}>
+          Add
+        </button>
+      </div>
 
-      <ul>
+      <ul className={styles.list}>
         {relations.map((rel, index) => (
-          <li key={`${rel.id}-${rel.rawMaterial.id}-${index}`}>
+          <li
+            key={`${rel.id}-${rel.rawMaterial.id}-${index}`}
+            className={styles.listItem}
+          >
             {rel.rawMaterial.name} - {rel.quantity}
           </li>
         ))}

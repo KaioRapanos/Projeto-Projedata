@@ -10,16 +10,14 @@
   align-items: center;
   background-color: #1f2937;
   padding: 10px 20px;
-  gap: 20px;
+  gap: 30px;
 }
 
-/* Logo no canto esquerdo */
 .logo {
   height: 80px;
   
 }
 
-/* Links */
 .navLink {
   color: #fff;
   text-decoration: none;
@@ -29,6 +27,8 @@
 
 .navLink:hover {
   color: #60a5fa;
+  scale: 1.1;
+  transition: ease 0.2s;
 }
 
 .activeLink {
@@ -36,7 +36,6 @@
   font-weight: 700;
 }
 
-/* Container das páginas */
 .container {
   flex: 1;
   padding: 20px;

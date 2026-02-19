@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { api } from '../services/api'
 import { CrudButton } from './CrudButton'
 import RawMaterialForm from './RawMaterialForm'
+import styles from './styles/Table.module.css'
+
 
 interface RawMaterial {
   id: number
@@ -47,13 +49,18 @@ export default function RawMaterialList() {
 
       {!showForm && (
         <>
-          <h3>Raw Materials</h3>
+          <h3 className={styles.title}>
+            Raw Materials
+          </h3>
 
-          <button onClick={() => { setEditRawMaterial(null); setShowForm(true) }}>
+          <button 
+            className={styles.buttonPrimary}
+            onClick={() => { setEditRawMaterial(null); setShowForm(true) }}
+          >
             New Raw Material
           </button>
 
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>Name</th>
@@ -66,7 +73,7 @@ export default function RawMaterialList() {
                 <tr key={rm.id}>
                   <td>{rm.name}</td>
                   <td>{rm.quantityInStock}</td>
-                  <td>
+                  <td className={styles.actionButtons}>
                     <button onClick={() => { setEditRawMaterial(rm); setShowForm(true) }}>
                       Edit
                     </button>

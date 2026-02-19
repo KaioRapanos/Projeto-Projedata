@@ -5,16 +5,17 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #fefefe; 
+  font-family: 'Roboto', sans-serif;
+  background-color: #fefefe;
   color: #333;
   min-height: 100vh;
   display: flex;
-  justify-content: center; 
-  align-items: center;     
+  justify-content: center;
+  align-items: center;
 }
 
-#root, .app-container {
+#root,
+.app-container {
   width: 100%;
   max-width: 1200px;
   padding: 20px;

@@ -1,0 +1,61 @@
+.container {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.select,
+.input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.select:focus,
+.input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25,118,210,0.15);
+}
+
+.addButton {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #125ea8;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.listItem {
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+  color: #444;
+}

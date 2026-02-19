@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../services/api'
 import { CrudButton } from './CrudButton'
 import ProductForm from './ProductForm'
+import styles from './styles/Table.module.css'
 
 interface RawMaterial {
   id: number
@@ -48,17 +49,22 @@ export default function ProductList() {
       {/* Mostrar lista apenas se form não estiver ativo */}
       {!showForm && (
         <>
-          <h3>Products</h3>
-          <button onClick={() => { setEditProduct(null); setShowForm(true) }}>
+          <h3 className={styles.title}>
+            Products
+          </h3>
+          <button 
+            className={styles.buttonPrimary}
+            onClick={() => { setEditProduct(null); setShowForm(true) }}>
             New Product
           </button>
 
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Quantity</th>
+                <th>Raw Materials</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -75,7 +81,7 @@ export default function ProductList() {
                       </div>
                     ))}
                   </td>
-                  <td>
+                  <td className={styles.actionButtons}>
                     <button onClick={() => { setEditProduct(p); setShowForm(true) }}>
                       Edit
                     </button>

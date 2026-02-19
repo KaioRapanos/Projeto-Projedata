@@ -1,0 +1,63 @@
+.tableContainer {
+  width: 90%;
+  max-width: 900px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  margin: 20px auto;
+}
+
+.title {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.buttonPrimary {
+  margin-bottom: 15px;
+  padding: 8px 12px;
+  background-color: #2aa99b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buttonPrimary:hover {
+  background-color: #f3a131;
+  transform-origin: left;
+  transform: scale(1.1);
+  transition: ease 0.2s;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.highlightRow {
+  background-color: #2aa99b;
+  font-weight: 600;
+}
+
+.actionButtons button {
+  margin-right: 5px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}

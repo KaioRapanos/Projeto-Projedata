@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
+import styles from './styles/Table.module.css'
 
 interface ProductProductionDTO {
   id: number
@@ -16,7 +17,12 @@ export default function ProductionSuggestions() {
     setLoading(true)
     try {
       const res = await api.get('/production/suggestions')
-      setSuggestions(res.data)
+      const sorted = res.data.sort(
+        (a: ProductProductionDTO, b: ProductProductionDTO) =>
+          b.totalValue - a.totalValue
+      )
+
+      setSuggestions(sorted)
     } finally {
       setLoading(false)
     }
@@ -28,12 +34,13 @@ export default function ProductionSuggestions() {
 
   if (loading) return <p>Loading production suggestions...</p>
 
-  if (suggestions.length === 0) return <p>No production possible with current stock.</p>
+  if (suggestions.length === 0)
+    return <p>No production possible with current stock.</p>
 
   return (
     <div>
-      <h3>Production Suggestions</h3>
-      <table>
+      <h3 className={styles.title}>Production Suggestions</h3>
+      <table className={styles.table}>
         <thead>
           <tr>
             <th>Product</th>
@@ -42,8 +49,8 @@ export default function ProductionSuggestions() {
           </tr>
         </thead>
         <tbody>
-          {suggestions.map((p) => (
-            <tr key={p.id}>
+          {suggestions.map((p, index) => (
+            <tr key={p.id} className={index === 0 ? styles.highlightRow : ''}>
               <td>{p.name}</td>
               <td>{p.maxQuantity}</td>
               <td>${p.totalValue}</td>
