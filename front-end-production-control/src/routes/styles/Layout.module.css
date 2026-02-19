@@ -40,3 +40,42 @@
   flex: 1;
   padding: 20px;
 }
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .logo {
+    height: 60px;
+  }
+
+  .navLink {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .navLink {
+    font-size: 13px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}

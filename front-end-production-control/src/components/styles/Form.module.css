@@ -76,3 +76,88 @@
 .secondaryButton:hover {
   background-color: #cfcfcf;
 }
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+  .formContainer {
+    width: 95%;
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .input {
+    font-size: 0.9rem;
+    padding: 9px 10px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+  .formContainer {
+    width: 95%;
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  .title {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .input {
+    font-size: 0.9rem;
+    padding: 9px 10px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    width: 100%;
+    padding: 15px;
+    border-radius: 0;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .label {
+    font-size: 0.85rem;
+  }
+
+  .input {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}

@@ -59,3 +59,55 @@
   font-size: 0.9rem;
   color: #444;
 }
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .select,
+  .input {
+    width: 100%;
+  }
+
+  .addButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .listItem {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin-top: 20px;
+    padding-top: 15px;
+  }
+
+  .title {
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .select,
+  .input {
+    font-size: 0.85rem;
+    padding: 7px 8px;
+  }
+
+  .addButton {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .listItem {
+    font-size: 0.8rem;
+  }
+}
